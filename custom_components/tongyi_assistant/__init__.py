@@ -12,8 +12,8 @@ from typing import Any, Literal
 from string import Template
 
 import dashscope
-import openai
-from openai import error
+
+
 
 from homeassistant.components.homeassistant.exposed_entities import async_should_expose
 from homeassistant.components import conversation
@@ -70,7 +70,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload TongyiAI Agent."""
-    openai.api_key = None
+    #openai.api_key = None
     conversation.async_unset_agent(hass, entry)
     return True
 
@@ -233,9 +233,6 @@ class TongyiAIAgent(conversation.AbstractConversationAgent):
         # set a default reply
         # this will be changed if a better reply is found
         reply = content
-
-        _LOGGER.info("Response for %s: %s", model, content)
-
         json_response = None
 
         # all responses should come back as a JSON, since we requested such in the prompt_template
@@ -257,10 +254,10 @@ class TongyiAIAgent(conversation.AbstractConversationAgent):
             try:
                 json_response = json.loads(json_string)
             except json.JSONDecodeError as err:
-                _LOGGER.error('Error on second parsing of JSON message from TongyiAI %s', err)
+                _LOGGER.error('Error on second parsing of JSON message from TongyiAI %s', json_string)
         else:
-            _LOGGER.error('Error on second extraction of JSON message from TongyiAI, %s', content)
-        _LOGGER.error('message from TongyiAI, %s', content)
+            _LOGGER.info('Error on second extraction of JSON message from TongyiAI, %s', content)
+     
 
         # only operate on JSON actions if JSON was extracted
         if json_response is not None:
@@ -273,7 +270,7 @@ class TongyiAIAgent(conversation.AbstractConversationAgent):
                     # TODO: make this support more than just lights
                     #await self.hass.services.async_call(device, entity['action'], {'entity_id': entity['entity_id'],'service_data': entity['service_data']})
                     await self.hass.services.async_call(domain, entity['service'], entity['service_data'])
-                    _LOGGER.debug("Calling service: %s %s %s", domain, entity['service'], entity['service_data'])
+                    _LOGGER.error("Calling service: %s %s %s", domain, entity['service'], entity['service_data'])
             except KeyError as err:
                 _LOGGER.error('该操作还不支持 %s', user_input.text)
 
