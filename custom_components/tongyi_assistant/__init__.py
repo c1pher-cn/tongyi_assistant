@@ -272,7 +272,7 @@ class TongyiAIAgent(conversation.AbstractConversationAgent):
                     #await self.hass.services.async_call(domain, entity['service'], entity['service_data'])
                     if entity['service'].find('.') > 0:
                         domain2,service=entity['service'].split('.')
-		    else:
+                    else:
                         service=entity['service']
                     await self.hass.services.async_call(domain, service, entity['service_data'])
                     _LOGGER.error("Calling service: %s %s %s", domain, service, entity['service_data'])
