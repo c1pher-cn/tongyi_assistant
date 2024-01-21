@@ -270,10 +270,10 @@ class TongyiAIAgent(conversation.AbstractConversationAgent):
                     # TODO: make this support more than just lights
                     #await self.hass.services.async_call(device, entity['action'], {'entity_id': entity['entity_id'],'service_data': entity['service_data']})
                     #await self.hass.services.async_call(domain, entity['service'], entity['service_data'])
-                    if entity['service'].find('.') > 0
-						domain2,service=entity['service'].split('.')
-					else
-						service=entity['service']
+                    if entity['service'].find('.') > 0:
+                        domain2,service=entity['service'].split('.')
+		    else:
+                        service=entity['service']
                     await self.hass.services.async_call(domain, service, entity['service_data'])
                     _LOGGER.error("Calling service: %s %s %s", domain, service, entity['service_data'])
             except KeyError as err:
