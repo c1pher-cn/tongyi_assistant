@@ -1,4 +1,4 @@
-"""The OpenAI Conrtrol integration."""
+"""The TongyiAI Conrtrol integration."""
 from __future__ import annotations
 
 import json
@@ -45,7 +45,7 @@ entity_template = Template(ENTITY_TEMPLATE)
 prompt_template = Template(PROMPT_TEMPLATE)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up OpenAI Agent from a config entry."""
+    """Set up TongyiAI Agent from a config entry."""
     dashscope.api_key = entry.data[CONF_API_KEY]
 
     #try:
@@ -61,15 +61,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     #except error.AuthenticationError as err:
     #    _LOGGER.error("Invalid API key: %s", err)
     #    return False
-    #except error.OpenAIError as err:
+    #except error.TongyiAIError as err:
     #    raise ConfigEntryNotReady(err) from err
 
-    conversation.async_set_agent(hass, entry, OpenAIAgent(hass, entry))
+    conversation.async_set_agent(hass, entry, TongyiAIAgent(hass, entry))
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload OpenAI Agent."""
+    """Unload TongyiAI Agent."""
     openai.api_key = None
     conversation.async_unset_agent(hass, entry)
     return True
@@ -86,8 +86,8 @@ def _entry_ext_dict(entry: er.RegistryEntry) -> dict[str, Any]:
     data["original_icon"] = entry.original_icon
     return data
 
-class OpenAIAgent(conversation.AbstractConversationAgent):
-    """OpenAI Conrtrol Agent."""
+class TongyiAIAgent(conversation.AbstractConversationAgent):
+    """TongyiAI Conrtrol Agent."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize the agent."""
@@ -192,7 +192,7 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
 
         _LOGGER.info("Prompt for %s: %s", model,max_tokens,top_p,temperature, messages)
 
-        """ OpenAI Call """
+        """ TongyiAI Call """
 
         # NOTE: this version does not support a full conversation history
         # this is because the prompt_template and entities list
@@ -217,11 +217,11 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
        #         temperature=temperature,
        #         user=conversation_id,
        #     )
-       # except error.OpenAIError as err:
+       # except error.TongyiAIError as err:
        #     intent_response = intent.IntentResponse(language=user_input.language)
        #     intent_response.async_set_error(
        #         intent.IntentResponseErrorCode.UNKNOWN,
-       #         f"Sorry, I had a problem talking to OpenAI: {err}",
+       #         f"Sorry, I had a problem talking to TongyiAI: {err}",
        #     )
        #     return conversation.ConversationResult(
        #         response=intent_response, conversation_id=conversation_id
@@ -242,7 +242,7 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
         try:
             json_response = json.loads(content)
         except json.JSONDecodeError as err:
-            _LOGGER.info('Error on first parsing of JSON message from OpenAI %s', err)
+            _LOGGER.info('Error on first parsing of JSON message from TongyiAI %s', err)
 
         # if the response did not come back as a JSON
         # attempt to extract JSON from the response
@@ -257,10 +257,10 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
             try:
                 json_response = json.loads(json_string)
             except json.JSONDecodeError as err:
-                _LOGGER.error('Error on second parsing of JSON message from OpenAI %s', err)
+                _LOGGER.error('Error on second parsing of JSON message from TongyiAI %s', err)
         else:
-            _LOGGER.error('Error on second extraction of JSON message from OpenAI, %s', content)
-        _LOGGER.error('message from OpenAI, %s', content)
+            _LOGGER.error('Error on second extraction of JSON message from TongyiAI, %s', content)
+        _LOGGER.error('message from TongyiAI, %s', content)
 
         # only operate on JSON actions if JSON was extracted
         if json_response is not None:
@@ -286,7 +286,7 @@ class OpenAIAgent(conversation.AbstractConversationAgent):
                 intent_response = intent.IntentResponse(language=user_input.language)
                 intent_response.async_set_error(
                     intent.IntentResponseErrorCode.UNKNOWN,
-                    f"Sorry, there was an error understanding OpenAI: {err}",
+                    f"Sorry, there was an error understanding TongyiAI: {err}",
                 )
                 return conversation.ConversationResult(
                     response=intent_response, conversation_id=conversation_id
