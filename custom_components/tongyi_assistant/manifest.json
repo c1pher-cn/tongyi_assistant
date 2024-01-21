@@ -1,0 +1,14 @@
+{
+  "domain": "tongyi_assistant",
+  "name": "Tongyi Assistant",
+  "codeowners": ["@c1pher-cn"],
+  "config_flow": true,
+  "dependencies": ["conversation"],
+  "documentation": "https://github.com/c1pher-cn/tongyi_assistant",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/c1pher-cn/tongyi_assistant/issue",
+  "requirements": ["dashscope>=1.10.0"],
+  "version": "v0.0.1",
+  "loggers": ["custom_components.tongyi_assistant"]
+}
