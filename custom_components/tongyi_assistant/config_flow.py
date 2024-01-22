@@ -1,4 +1,4 @@
-"""Config flow for OpenAI Conrtrol integration."""
+"""Config flow for TongyiAI Conrtrol integration."""
 from __future__ import annotations
 
 from functools import partial
@@ -8,8 +8,6 @@ from types import MappingProxyType
 from typing import Any
 
 import dashscope
-import openai
-from openai import error
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -77,7 +75,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for OpenAI Conrtrol."""
+    """Handle a config flow for TongyiAI Conrtrol."""
 
     VERSION = 1
 
@@ -117,7 +115,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class OptionsFlow(config_entries.OptionsFlow):
-    """OpenAI Conrtrol config flow options handler."""
+    """TongyiAI Conrtrol config flow options handler."""
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
@@ -128,7 +126,7 @@ class OptionsFlow(config_entries.OptionsFlow):
     ) -> FlowResult:
         """Manage the options."""
         if user_input is not None:
-            return self.async_create_entry(title="OpenAI Conrtrol", data=user_input)
+            return self.async_create_entry(title="TongyiAI Conrtrol", data=user_input)
         schema = openai_config_option_schema(self.config_entry.options)
         return self.async_show_form(
             step_id="init",
@@ -137,7 +135,7 @@ class OptionsFlow(config_entries.OptionsFlow):
 
 
 def openai_config_option_schema(options: MappingProxyType[str, Any]) -> dict:
-    """Return a schema for OpenAI Conrtrol completion options."""
+    """Return a schema for TongyiAI Conrtrol completion options."""
     if not options:
         options = DEFAULT_OPTIONS
     return {
